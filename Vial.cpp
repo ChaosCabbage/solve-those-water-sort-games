@@ -71,11 +71,15 @@ void Vial::moveTo(Vial& other)
 
 void Vial::debug() const
 {
-  std::cout << "[B  ";
-  for (const auto& c : m_coloursFromBottom) {
-    std::cout << c << " ";
+  std::cout << "(";
+  for (size_t i = 0; i < m_depth; ++i) {
+    if (i < m_coloursFromBottom.size()) {
+      std::cout << m_coloursFromBottom[i];
+    } else {
+      std::cout << "  ";
+    }
   }
-  std::cout << " T]\n";
+  std::cout << "]\n";
 }
 
 bool Vial::isEmpty() const

@@ -1,4 +1,6 @@
 #include <iostream>
+#include <thread>
+#include <chrono>
 #include "GameState.h"
 #include "Vial.h"
 #include "Solver.h"
@@ -24,20 +26,34 @@
 
 #define Block(X) (X "\xDB\xDB" colourReset)
 
-void printSolution(const std::vector<Move>& solution, GameState game)
+void printSolution(const std::vector<Move>& solution)
 {
-  for (const auto& m : solution) {
-    game.doMove(m);
-    game.debug();
-  }
-
-  std::cout << "\n\nSolution:\n";
+  std::cout << "Solution:\n";
   for (const auto& m : solution) {
     m.print();
   }
 }
 
-int main()
+void animateSolution(const std::vector<Move>& solution, GameState game)
+{
+  using namespace std::chrono_literals;
+  system("CLS");
+
+  for (const auto& m : solution) {
+    game.debug();
+    game.doMove(m);
+    std::cout << std::flush;
+    std::this_thread::sleep_for(400ms);
+    system("CLS");
+  }
+  game.debug();
+
+  std::this_thread::sleep_for(5s);
+
+  std::cout << "\n\n";
+}
+
+int main(int argc, const char** argv)
 {
   const auto LIME = Block(fgBrightGreen);
   const auto GREEN = Block(fgGreen);
@@ -69,13 +85,12 @@ int main()
     Vial(4, { })
   });
 
-  startingPosition.debug();
-
-  std::cout << "\n";
-
   Solver solver(startingPosition);
   if (solver.solved()) {
-    printSolution(solver.solution(), startingPosition);
+    if (argc > 1 && strcmp(argv[1], "--animate") == 0) {
+      animateSolution(solver.solution(), startingPosition);
+    }
+    printSolution(solver.solution());
     exit(0);
   }
 
