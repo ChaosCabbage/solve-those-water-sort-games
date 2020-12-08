@@ -2,8 +2,9 @@
 #include <iostream>
 #include <assert.h>
 #include "Vial.h"
+#include "Move.h"
 
-void Move::debug() const {
+void Move::print() const {
   std::cout << "{ " << source + 1 << " -> " << destination + 1 << " }\n";
 }
 
@@ -58,7 +59,7 @@ void GameState::debug() const
 {
   std::cout << "{\n";
   for (std::size_t i = 0; i < m_vials.size(); ++i) {
-    std::cout << "    " << i + 1 << ": ";
+    printf("%6d:", i + 1);
     m_vials[i].debug();
   }
 

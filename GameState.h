@@ -1,16 +1,8 @@
 #pragma once
 #include <vector>
+#include "Vial.h"
 
-class Vial;
-
-using VialID = std::size_t;
-
-struct Move {
-  VialID source;
-  VialID destination;
-
-  void debug() const;
-};
+struct Move;
 
 class GameState {
 public:
